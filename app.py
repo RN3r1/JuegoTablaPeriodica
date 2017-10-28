@@ -2,6 +2,13 @@ import tkinter
 from tkinter import *
 from tkinter import ttk
 from tkinter.font import Font
+import wiringpi
+
+wiringpi.wiringPiSetup()
+
+wiringpi.pinMode(0, 1)
+wiringpi.pinMode(1, 1)
+wiringpi.pinMode(2, 1)
 
 root = Tk()
 root.resizable(width=False, height=False)
@@ -11,7 +18,15 @@ root.title('Juego de Tabla Periódica')
 gameMode = False
 menu = True
 
+selectedPin = 0
+
 content = ttk.Frame(root)
+
+def binDigitalWrite(num):
+    num = bin(num)[2:].zfill(6)
+    wiringpi.digitalWrite(0, int(num[5]))
+    wiringpi.digitalWrite(1, int(num[4]))
+    wiringpi.digitalWrite(2, int(num[3]))
 
 def enableLabel():
     label.grid(column=0, row=0, columnspan=6, sticky=(N, S, E, W))
@@ -25,9 +40,15 @@ def downCallback():
     print('down')
 
 def rightCallback():
+    global selectedPin
+    selectedPin+=1
+    binDigitalWrite(selectedPin)
     print('right')
 
 def leftCallback():
+    global selectedPin
+    selectedPin-=1
+    binDigitalWrite(selectedPin)
     print('left')
 
 def okCallback():
@@ -58,7 +79,7 @@ labelVar = tkinter.StringVar()
 labelVar.set('TEXTO')
 
 helv36 = Font(family='Helvetica', size=15, weight='bold')
-labelFont = Font(family='Helvetica', size=20)
+labelFont = Font(family='Helvetica', size=15)
 
 up = tkinter.Button(content, text = '^', command = upCallback, font=helv36)
 down = tkinter.Button(content, text = '↓', command = downCallback, font=helv36)
