@@ -72,9 +72,6 @@ game = tkinter.Button(content, text = 'Jugar', command = gameCallback, font=helv
 
 label = tkinter.Label(content, textvariable=labelVar, relief=tkinter.RAISED, font=labelFont, wraplength=480, anchor='center')
 
-# label.config(width=480)
-# label.config(font=("Courier", 20))
-
 content.grid(column=0, row=0, sticky=(N, S, E, W))
 
 label.grid(column=0, row=0, columnspan=6, sticky=(N, S, E, W))
