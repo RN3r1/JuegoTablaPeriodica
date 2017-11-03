@@ -28,3 +28,4 @@ binDigitalWrite(0)
 #     binDigitalWrite(i)
 #     time.sleep(5)
 
+# Secuencia [0, ]
