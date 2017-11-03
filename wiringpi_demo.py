@@ -11,7 +11,7 @@ wiringpi.pinMode(4, 1)
 wiringpi.pinMode(5, 1)
 wiringpi.pinMode(6, 1)
 
-wiringpi.digitalWrite(6, 1)
+wiringpi.digitalWrite(6, 1) # enable!
 
 def binDigitalWrite(num):
     num = bin(num)[2:].zfill(6)
@@ -22,8 +22,9 @@ def binDigitalWrite(num):
     wiringpi.digitalWrite(4, int(num[1]))
     wiringpi.digitalWrite(5, int(num[0]))
 
-for i in range(0,39):
-    binDigitalWrite(i)
-    time.sleep(5)
-    
-wiringpi.digitalWrite(6, 1)
+binDigitalWrite(0)
+
+# for i in range(0,39):
+#     binDigitalWrite(i)
+#     time.sleep(5)
+
