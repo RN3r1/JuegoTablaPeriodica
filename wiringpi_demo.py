@@ -26,8 +26,8 @@ def binDigitalWrite(num):
     wiringpi.digitalWrite(4, int(num[1]))
     wiringpi.digitalWrite(5, int(num[0]))
 
-# binDigitalWrite(23)
-# time.sleep(10)
+#binDigitalWrite(31)
+#time.sleep(10)
 
 for i in secuencia:
     binDigitalWrite(i)
