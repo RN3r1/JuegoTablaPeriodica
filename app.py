@@ -4,7 +4,7 @@ from tkinter import ttk
 from tkinter.font import Font
 from random import randint
 
-# import wiringpi
+import wiringpi
 
 # 7, 15, 23, 31
 secuencia = [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 32, 33, 34, 35, 36, 37, 7, 15, 23, 31]
@@ -23,15 +23,15 @@ puntaje = 0
 selectedPin = 0
 randomIndex = 0
 
-# wiringpi.wiringPiSetup()
+wiringpi.wiringPiSetup()
 #
-# wiringpi.pinMode(0, 1)
-# wiringpi.pinMode(1, 1)
-# wiringpi.pinMode(2, 1)
-# wiringpi.pinMode(3, 1)
-# wiringpi.pinMode(4, 1)
-# wiringpi.pinMode(5, 1)
-# wiringpi.pinMode(6, 1)
+wiringpi.pinMode(0, 1)
+wiringpi.pinMode(1, 1)
+wiringpi.pinMode(2, 1)
+wiringpi.pinMode(3, 1)
+wiringpi.pinMode(4, 1)
+wiringpi.pinMode(5, 1)
+wiringpi.pinMode(6, 1)
 
 root = Tk()
 root.resizable(width=False, height=False)
@@ -41,21 +41,21 @@ root.title('Juego de Tabla Periódica')
 content = ttk.Frame(root)
 
 def enableLeds():
-    # wiringpi.digitalWrite(6, 1)  # enable!
+    wiringpi.digitalWrite(6, 1)  # enable!
     print('LEDS ENABLED')
 
 def disableLeds():
-    # wiringpi.digitalWrite(6, 0)  # disable!
+    wiringpi.digitalWrite(6, 0)  # disable!
     print('LEDS DISABLED')
 
 def binDigitalWrite(num):
     num = bin(num)[2:].zfill(6)
-    # wiringpi.digitalWrite(0, int(num[5]))
-    # wiringpi.digitalWrite(1, int(num[4]))
-    # wiringpi.digitalWrite(2, int(num[3]))
-    # wiringpi.digitalWrite(3, int(num[2]))
-    # wiringpi.digitalWrite(4, int(num[1]))
-    # wiringpi.digitalWrite(5, int(num[0]))
+    wiringpi.digitalWrite(0, int(num[5]))
+    wiringpi.digitalWrite(1, int(num[4]))
+    wiringpi.digitalWrite(2, int(num[3]))
+    wiringpi.digitalWrite(3, int(num[2]))
+    wiringpi.digitalWrite(4, int(num[1]))
+    wiringpi.digitalWrite(5, int(num[0]))
 
 def enableLabel():
     label.grid(column=0, row=0, columnspan=6, sticky=(N, S, E, W))
@@ -66,7 +66,7 @@ def upCallback():
     if (selectedPin > 0 and menu == False):
         global selectedPin
         selectedPin -= 1
-        # binDigitalWrite(secuencia[selectedPin])
+        binDigitalWrite(secuencia[selectedPin])
         if gameMode == False:
             setLabelText()
         print('left')
@@ -75,7 +75,7 @@ def downCallback():
     if selectedPin < 37 and menu == False:
         global selectedPin
         selectedPin+=1
-        # binDigitalWrite(secuencia[selectedPin])
+        binDigitalWrite(secuencia[selectedPin])
         if gameMode == False:
             setLabelText()
         print('right')
@@ -84,7 +84,7 @@ def rightCallback():
     if selectedPin < 33 and menu == False:
         global selectedPin
         selectedPin+=5
-        # binDigitalWrite(secuencia[selectedPin])
+        binDigitalWrite(secuencia[selectedPin])
         if gameMode == False:
             setLabelText()
         print('right')
@@ -93,7 +93,7 @@ def leftCallback():
     if(selectedPin > 4  and menu == False):
         global selectedPin
         selectedPin-=5
-        # binDigitalWrite(secuencia[selectedPin])
+        binDigitalWrite(secuencia[selectedPin])
         if gameMode == False:
             setLabelText()
         print('left')
@@ -122,6 +122,7 @@ def exitCallback():
     menu = True
     gameMode = False
     selectedPin = 0
+    binDigitalWrite(0)
     puntaje = 0
     print('Salir gameMode={} & menu={}'.format(gameMode, menu))
 
