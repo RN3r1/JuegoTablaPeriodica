@@ -2,6 +2,8 @@ import tkinter
 from tkinter import *
 from tkinter import ttk
 from tkinter.font import Font
+from random import randint
+
 # import wiringpi
 
 # 7, 15, 23, 31
@@ -17,7 +19,9 @@ print('Descripciones -> {}'.format(len(descripciones)))
 gameMode = False
 menu = True
 
+puntaje = 0
 selectedPin = 0
+randomIndex = 0
 
 # wiringpi.wiringPiSetup()
 #
@@ -59,34 +63,58 @@ def enableLabel():
     game.grid_remove()
 
 def upCallback():
-    print('up')
+    if (selectedPin > 0 and menu == False):
+        global selectedPin
+        selectedPin -= 1
+        # binDigitalWrite(secuencia[selectedPin])
+        if gameMode == False:
+            setLabelText()
+        print('left')
 
 def downCallback():
-    print('down')
-
-def rightCallback():
     if selectedPin < 37 and menu == False:
         global selectedPin
         selectedPin+=1
         # binDigitalWrite(secuencia[selectedPin])
-        setLabelText()
+        if gameMode == False:
+            setLabelText()
+        print('right')
+
+def rightCallback():
+    if selectedPin < 33 and menu == False:
+        global selectedPin
+        selectedPin+=5
+        # binDigitalWrite(secuencia[selectedPin])
+        if gameMode == False:
+            setLabelText()
         print('right')
 
 def leftCallback():
-    if(selectedPin > 0  and menu == False):
+    if(selectedPin > 4  and menu == False):
         global selectedPin
-        selectedPin-=1
+        selectedPin-=5
         # binDigitalWrite(secuencia[selectedPin])
-        setLabelText()
+        if gameMode == False:
+            setLabelText()
         print('left')
 
 def okCallback():
-    print('OK')
+    global randomIndex
+    global puntaje
+    if menu == False and gameMode == True:
+        if preguntas[randomIndex]['respuesta'] == descripciones[secuenciaElementos[selectedPin]]['elemento']:
+            puntaje += 1
+            randomIndex = randint(0, 37)
+            labelVar.set('{}\n\nPuntaje = {}'.format(preguntas[randomIndex]['pregunta'], puntaje))
+            print('OK')
+        else:
+            labelVar.set('FALLASTE!\n\nPuntaje Final: {}'.format(puntaje))
 
 def exitCallback():
     global menu
     global gameMode
     global selectedPin
+    global puntaje
     desc.grid(column=3, row=0, columnspan=3, sticky=(N, S, E, W))
     game.grid(column=0, row=0, columnspan=3, sticky=(N, S, E, W))
     label.grid_remove()
@@ -94,16 +122,20 @@ def exitCallback():
     menu = True
     gameMode = False
     selectedPin = 0
+    puntaje = 0
     print('Salir gameMode={} & menu={}'.format(gameMode, menu))
 
 def gameCallback():
     global menu
     global gameMode
     global selectedPin
+    global randomIndex
     enableLabel()
     enableLeds()
     menu = False
     gameMode = True
+    randomIndex = randint(0, 37)
+    labelVar.set('{}\n\nPuntaje = {}'.format(preguntas[randomIndex]['pregunta'], puntaje))
     print('Jugar gameMode={} & menu={}'.format(gameMode, menu))
 
 def descCallback():
@@ -118,8 +150,8 @@ def descCallback():
     print('Descripcion gameMode={} & menu={}'.format(gameMode, menu))
 
 def setLabelText():
-    labelVar.set('{} - {}'.format(descripciones[secuenciaElementos[selectedPin]]['elemento'], descripciones[secuenciaElementos[selectedPin]]['desc']))
-    print('secuencia Elementos -> {}'.format(secuenciaElementos[selectedPin]))
+    if gameMode == False:
+        labelVar.set('{} - {}'.format(descripciones[secuenciaElementos[selectedPin]]['elemento'], descripciones[secuenciaElementos[selectedPin]]['desc']))
 
 labelVar = tkinter.StringVar()
 
